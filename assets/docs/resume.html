@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum Vitae - Muhammad Ridhwan Rido</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 4px;
+      color: #0f172a;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      color: #0284c7;
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .contact-bar {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 4px;
+      color: #0f172a;
+      font-size: 16px;
+      margin-top: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .item {
+      margin-bottom: 14px;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .item-sub {
+      color: #0284c7;
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    ul {
+      margin: 4px 0 0 20px;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 4px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    p {
+      font-size: 13.5px;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+        padding: 10px;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
+
+    .print-btn {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .print-btn:hover {
+      background: #0369a1;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak / Simpan sebagai PDF</button>
+  <h1>Muhammad Ridhwan Rido</h1>
+  <div class="subtitle">Mahasiswa S1 Sistem Informasi • Junior Web Developer</div>
+  <div class="contact-bar">
+    Serang, Banten, Indonesia • ridhwanrido794@gmail.com • +62 838-2409-3241 • Portofolio: ridhwan.dev
+  </div>
+
+  <h2>RINGKASAN PROFIL</h2>
+  <p>Mahasiswa aktif program studi S1 Sistem Informasi dengan minat mendalam dan fokus pembelajaran pada rekayasa perangkat lunak (Software Engineering) dan Web Development. Memiliki pengalaman membangun proyek web berbasis Next.js, React, JavaScript, serta responsive styling dengan Tailwind CSS dan Bootstrap 5. Berorientasi pada penulisan kode bersih, pemecahan masalah secara logis, dan antusiasme tinggi untuk terus berkembang di industri teknologi.</p>
+
+  <h2>PENDIDIKAN</h2>
+  <div class="item">
+    <div class="item-header">
+      <span>S1 Sistem Informasi</span>
+      <span>2024 — Sekarang</span>
+    </div>
+    <div class="item-sub">Fokus Pembelajaran: Pemrograman Web, Basis Data Relasional, &amp; Rekayasa Perangkat Lunak</div>
+    <ul>
+      <li>Mempelajari dasar arsitektur sistem informasi, algoritma pemrograman, dan analisis kebutuhan perangkat lunak.</li>
+      <li>Aktif mengeksplorasi ekosistem modern web development secara mandiri di luar jam perkuliahan.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-header">
+      <span>SMA Negeri 1 Tirtayasa</span>
+      <span>2021 — 2024</span>
+    </div>
+    <div class="item-sub">Jurusan Ilmu Pengetahuan Sosial (IPS) • Nilai Rata-rata: 79.86</div>
+  </div>
+
+  <h2>PROYEK PENGEMBANGAN WEB</h2>
+  <div class="item">
+    <div class="item-header">
+      <span>Web Katalog Konveksi (Apparel &amp; Merchandise)</span>
+      <span>Proyek Selesai (Live)</span>
+    </div>
+    <div class="item-sub">Tech Stack: Next.js, React, Tailwind CSS / CSS3, WhatsApp Gateway</div>
+    <ul>
+      <li>Merancang dan mengimplementasikan website etalase katalog produk busana custom (kaos combed, jaket fleece, kemeja kerja/PDH).</li>
+      <li>Mengintegrasikan navigasi filter kategori produk dan spesifikasi bahan kain secara interaktif.</li>
+      <li>Membangun tombol pemesanan langsung terhubung ke WhatsApp bisnis dengan format pesan otomatis.</li>
+      <li>Memastikan antarmuka mobile-first responsif dan ringan diakses oleh calon pelanggan.</li>
+    </ul>
+  </div>
+
+  <div class="item">
+    <div class="item-header">
+      <span>Student Academic &amp; Task Planner</span>
+      <span>Dalam Pengembangan</span>
+    </div>
+    <div class="item-sub">Tech Stack: Next.js, React, JavaScript / TypeScript, Bootstrap 5</div>
+    <ul>
+      <li>Mengembangkan aplikasi web manajemen waktu perkuliahan mahasiswa untuk mencatat jadwal kelas, dosen, dan deadline tugas kuliah.</li>
+      <li>Menerapkan prinsip pengelolaan state komponen dan struktur antarmuka bebas distraksi.</li>
+    </ul>
+  </div>
+
+  <h2>KEAHLIAN TEKNIS (TECHNICAL SKILLS)</h2>
+  <p><strong>Bahasa &amp; Fondasi Web:</strong> HTML5 Semantic, CSS3 (Flexbox &amp; Grid), JavaScript (ES6+), Dasar TypeScript</p>
+  <p><strong>Framework &amp; Styling:</strong> Next.js, React.js, Tailwind CSS, Bootstrap 5</p>
+  <p><strong>Tools &amp; Workflow:</strong> Git, GitHub, Visual Studio Code, Figma (Wireframing &amp; UI Design), Vercel</p>
+  <p><strong>Konsep &amp; Metodologi:</strong> Responsive Web Design, Relational Database (SQL Concept), Clean Code, Problem Solving</p>
+</body>
+
+</html>

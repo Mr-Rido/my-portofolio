@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="konveksiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#141c2e"/>
+    </linearGradient>
+    <linearGradient id="neonCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d2ff"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="waGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#25D366"/>
+      <stop offset="100%" stop-color="#128C7E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#konveksiBg)"/>
+
+  <!-- Browser Frame -->
+  <rect x="40" y="30" width="720" height="440" rx="14" fill="#0b1326" stroke="rgba(0, 210, 255, 0.3)" stroke-width="1.5"/>
+  
+  <!-- Browser Header -->
+  <rect x="40" y="30" width="720" height="42" rx="14" fill="#0f192f"/>
+  <circle cx="70" cy="51" r="5" fill="#ef4444"/>
+  <circle cx="88" cy="51" r="5" fill="#f59e0b"/>
+  <circle cx="106" cy="51" r="5" fill="#10b981"/>
+  
+  <!-- URL Bar -->
+  <rect x="180" y="40" width="380" height="22" rx="6" fill="#1e293b"/>
+  <text x="210" y="55" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11">konveksi-apparel-catalog.vercel.app</text>
+  <rect x="580" y="42" width="60" height="18" rx="4" fill="rgba(0, 210, 255, 0.15)"/>
+  <text x="590" y="55" fill="#00d2ff" font-family="sans-serif" font-size="10" font-weight="bold">NEXT.JS</text>
+
+  <!-- Navbar inside web -->
+  <rect x="65" y="90" width="670" height="36" rx="8" fill="#141f36"/>
+  <text x="85" y="113" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="bold">KONVEKSI<tspan fill="#00d2ff">.CO</tspan></text>
+  <text x="260" y="113" fill="#00d2ff" font-family="sans-serif" font-size="11" font-weight="600">Katalog Produk</text>
+  <text x="360" y="113" fill="#94a3b8" font-family="sans-serif" font-size="11">Bahan &amp; Sablon</text>
+  <text x="460" y="113" fill="#94a3b8" font-family="sans-serif" font-size="11">Portofolio Klien</text>
+  
+  <!-- WhatsApp Direct Order CTA -->
+  <rect x="585" y="96" width="135" height="24" rx="6" fill="url(#waGrad)"/>
+  <text x="600" y="112" fill="#ffffff" font-family="sans-serif" font-size="10" font-weight="bold">Order via WhatsApp</text>
+
+  <!-- Hero Banner inside catalog -->
+  <rect x="65" y="136" width="670" height="90" rx="10" fill="#162544" stroke="rgba(255,255,255,0.06)"/>
+  <text x="90" y="172" fill="#ffffff" font-family="sans-serif" font-size="18" font-weight="bold">Katalog Busana &amp; Konveksi Custom</text>
+  <text x="90" y="196" fill="#94a3b8" font-family="sans-serif" font-size="12">Solusi sablon, bordir, seragam kantor, dan kaos komunitas dengan kualitas terjamin.</text>
+
+  <!-- Product Grid (3 Cards) -->
+  <!-- Card 1: Kaos Cotton Combed -->
+  <rect x="65" y="240" width="210" height="210" rx="10" fill="#131e33" stroke="rgba(0, 210, 255, 0.2)"/>
+  <!-- T-Shirt Graphic Mockup -->
+  <path d="M 120 270 L 140 260 L 160 260 L 180 270 L 195 295 L 180 305 L 170 295 L 170 345 L 130 345 L 130 295 L 120 305 L 105 295 Z" fill="#1e293b" stroke="#00d2ff" stroke-width="1.5"/>
+  <text x="80" y="375" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="bold">Kaos Cotton Combed 24s/30s</text>
+  <text x="80" y="395" fill="#00d2ff" font-family="sans-serif" font-size="12" font-weight="bold">Min. Order 12 Pcs</text>
+  <rect x="80" y="410" width="180" height="26" rx="5" fill="#1e2d4d"/>
+  <text x="125" y="427" fill="#38bdf8" font-family="sans-serif" font-size="11" font-weight="600">Detail &amp; Bahan</text>
+
+  <!-- Card 2: Jaket & Hoodie Custom -->
+  <rect x="295" y="240" width="210" height="210" rx="10" fill="#131e33" stroke="rgba(139, 92, 246, 0.2)"/>
+  <!-- Hoodie Graphic Mockup -->
+  <path d="M 350 270 L 370 255 L 430 255 L 450 270 L 465 300 L 450 310 L 440 295 L 440 345 L 360 345 L 360 295 L 350 310 L 335 300 Z" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="310" y="375" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="bold">Hoodie &amp; Zipper Fleece</text>
+  <text x="310" y="395" fill="#8b5cf6" font-family="sans-serif" font-size="12" font-weight="bold">Bordir / DTF High Quality</text>
+  <rect x="310" y="410" width="180" height="26" rx="5" fill="#1e2d4d"/>
+  <text x="355" y="427" fill="#c084fc" font-family="sans-serif" font-size="11" font-weight="600">Detail &amp; Bahan</text>
+
+  <!-- Card 3: Seragam Kemeja PDH/PDL -->
+  <rect x="525" y="240" width="210" height="210" rx="10" fill="#131e33" stroke="rgba(16, 185, 129, 0.2)"/>
+  <!-- Kemeja Mockup -->
+  <path d="M 580 270 L 600 260 L 660 260 L 680 270 L 690 300 L 675 308 L 670 295 L 670 345 L 590 345 L 590 295 L 585 308 L 570 300 Z" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <line x1="630" y1="260" x2="630" y2="345" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <text x="540" y="375" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="bold">Kemeja Drill PDH / PDL</text>
+  <text x="540" y="395" fill="#10b981" font-family="sans-serif" font-size="12" font-weight="bold">American / Japan Drill</text>
+  <rect x="540" y="410" width="180" height="26" rx="5" fill="#1e2d4d"/>
+  <text x="585" y="427" fill="#34d399" font-family="sans-serif" font-size="11" font-weight="600">Detail &amp; Bahan</text>
+</svg>

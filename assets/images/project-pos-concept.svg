@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="posBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d17"/>
+      <stop offset="50%" stop-color="#0d1527"/>
+      <stop offset="100%" stop-color="#141e36"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#posBg)"/>
+
+  <!-- Window Frame -->
+  <rect x="50" y="40" width="700" height="420" rx="14" fill="#0b1324" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1.5"/>
+
+  <!-- Top bar -->
+  <rect x="50" y="40" width="700" height="42" rx="14" fill="#0f192f"/>
+  <circle cx="80" cy="61" r="5" fill="#ef4444"/>
+  <circle cx="98" cy="61" r="5" fill="#f59e0b"/>
+  <circle cx="116" cy="61" r="5" fill="#10b981"/>
+  <rect x="250" y="50" width="280" height="20" rx="5" fill="#1e293b"/>
+  <text x="270" y="64" fill="#94a3b8" font-family="'JetBrains Mono', monospace" font-size="11">UMKM POS &amp; Digital Storefront Concept</text>
+
+  <!-- Left: Product Catalog Selection -->
+  <rect x="75" y="105" width="415" height="330" rx="10" fill="#111c33" stroke="rgba(255,255,255,0.06)"/>
+  <text x="95" y="135" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="bold">Daftar Produk Kasir (POS)</text>
+  <rect x="360" y="120" width="115" height="22" rx="11" fill="rgba(56, 189, 248, 0.15)"/>
+  <text x="375" y="135" fill="#38bdf8" font-family="sans-serif" font-size="10" font-weight="bold">💡 RENCANA PROYEK</text>
+
+  <!-- Product tiles -->
+  <rect x="95" y="155" width="120" height="120" rx="8" fill="#172442" stroke="rgba(0,210,255,0.15)"/>
+  <rect x="110" y="170" width="90" height="50" rx="4" fill="#203058"/>
+  <text x="110" y="240" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">Produk Retail A</text>
+  <text x="110" y="260" fill="#00d2ff" font-family="sans-serif" font-size="11">Rp 25.000</text>
+
+  <rect x="225" y="155" width="120" height="120" rx="8" fill="#172442" stroke="rgba(0,210,255,0.15)"/>
+  <rect x="240" y="170" width="90" height="50" rx="4" fill="#203058"/>
+  <text x="240" y="240" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">Produk Retail B</text>
+  <text x="240" y="260" fill="#00d2ff" font-family="sans-serif" font-size="11">Rp 45.000</text>
+
+  <rect x="355" y="155" width="120" height="120" rx="8" fill="#172442" stroke="rgba(0,210,255,0.15)"/>
+  <rect x="370" y="170" width="90" height="50" rx="4" fill="#203058"/>
+  <text x="370" y="240" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">Produk Retail C</text>
+  <text x="370" y="260" fill="#00d2ff" font-family="sans-serif" font-size="11">Rp 75.000</text>
+
+  <!-- Sales chart preview -->
+  <rect x="95" y="295" width="380" height="120" rx="8" fill="#15213b"/>
+  <text x="115" y="320" fill="#94a3b8" font-family="sans-serif" font-size="11">Ringkasan Omset Harian (Simulasi)</text>
+  <path d="M 120 395 L 180 370 L 240 380 L 300 350 L 360 365 L 420 335 L 450 340" fill="none" stroke="#10b981" stroke-width="2"/>
+  <circle cx="420" cy="335" r="4" fill="#10b981"/>
+
+  <!-- Right: Cart & Invoice Receipt -->
+  <rect x="505" y="105" width="220" height="330" rx="10" fill="#101a2f" stroke="rgba(16, 185, 129, 0.2)"/>
+  <text x="525" y="135" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="bold">Struk Kasir Digital</text>
+  <line x1="525" y1="150" x2="705" y2="150" stroke="rgba(255,255,255,0.1)"/>
+  
+  <text x="525" y="175" fill="#94a3b8" font-family="sans-serif" font-size="11">Item 1 (x2)</text>
+  <text x="645" y="175" fill="#ffffff" font-family="sans-serif" font-size="11">Rp 50.000</text>
+
+  <text x="525" y="200" fill="#94a3b8" font-family="sans-serif" font-size="11">Item 2 (x1)</text>
+  <text x="645" y="200" fill="#ffffff" font-family="sans-serif" font-size="11">Rp 45.000</text>
+
+  <line x1="525" y1="225" x2="705" y2="225" stroke="rgba(255,255,255,0.1)" stroke-dasharray="3 3"/>
+  
+  <text x="525" y="250" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">Total Bayar</text>
+  <text x="635" y="250" fill="#10b981" font-family="sans-serif" font-size="13" font-weight="bold">Rp 95.000</text>
+
+  <rect x="525" y="375" width="180" height="38" rx="8" fill="url(#emeraldGrad)"/>
+  <text x="560" y="399" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">Cetak / Simpan Struk</text>
+</svg>
