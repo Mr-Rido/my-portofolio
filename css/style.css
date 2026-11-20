@@ -1,7 +1,5 @@
 /* Sistem Desain Portofolio Futuristik Minimalis */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 /* Variabel Tema (:root) */
 :root {
   --bg-darkest: #06090e;
@@ -58,7 +56,10 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 90px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 body {
@@ -68,6 +69,8 @@ body {
   line-height: 1.65;
   overflow-x: hidden;
   position: relative;
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
 }
 
@@ -423,11 +426,15 @@ a:hover {
 .navbar-cyber {
   position: fixed;
   top: 18px;
+  top: max(18px, env(safe-area-inset-top, 18px));
   left: 0;
   right: 0;
   z-index: 1030;
-  transition: var(--transition-normal);
   padding: 0;
+  width: 100%;
+  max-width: 100%;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .navbar-cyber-container {
@@ -438,6 +445,13 @@ a:hover {
   border-radius: 16px;
   padding: 10px 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar-cyber.scrolled .navbar-cyber-container {
+  background: rgba(8, 12, 20, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 210, 255, 0.15);
+  border-color: rgba(0, 210, 255, 0.25);
 }
 
 .navbar-brand {
@@ -511,9 +525,19 @@ a:hover {
 
 .navbar-toggler {
   border: 1px solid var(--border-glass);
+  border-radius: 10px;
   padding: 6px 10px;
   color: var(--text-primary);
   background: rgba(15, 23, 42, 0.6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.navbar-toggler:hover {
+  border-color: rgba(0, 210, 255, 0.4);
+  background: rgba(0, 210, 255, 0.08);
 }
 
 .navbar-toggler:focus {
@@ -598,6 +622,7 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   transition: transform 0.5s ease;
 }
 
@@ -740,26 +765,6 @@ a:hover {
 .skills-section {
   padding: 100px 0;
   position: relative;
-}
-
-.skill-tab-btn {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid var(--border-glass);
-  color: var(--text-secondary);
-  padding: 8px 20px;
-  border-radius: 30px;
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: var(--transition-fast);
-}
-
-.skill-tab-btn:hover,
-.skill-tab-btn.active {
-  background: rgba(0, 210, 255, 0.12);
-  border-color: var(--accent-cyan);
-  color: var(--accent-cyan);
 }
 
 .skill-card-item {
@@ -1259,13 +1264,18 @@ a:hover {
 
 /* Responsif */
 @media (max-width: 991.98px) {
+  html {
+    scroll-padding-top: 80px;
+  }
+
   .navbar-cyber {
-    top: 10px;
-    padding: 0 12px;
+    top: 12px;
+    top: max(12px, env(safe-area-inset-top, 12px));
+    padding: 0 16px;
   }
 
   .navbar-cyber-container {
-    padding: 10px 18px;
+    padding: 9px 18px;
   }
 
   .navbar-collapse {
@@ -1277,13 +1287,25 @@ a:hover {
     margin-top: 12px;
   }
 
+  .navbar-nav .nav-link {
+    padding: 10px 14px !important;
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .navbar-nav .nav-link.active::after {
+    display: none;
+  }
+
   .hero-section {
-    padding: 120px 0 60px;
+    padding: 110px 0 50px;
     text-align: center;
   }
 
   .hero-desc {
-    margin: 0 auto 2rem;
+    margin: 0 auto 1.75rem;
+    font-size: 1rem;
+    line-height: 1.65;
   }
 
   .hero-type-wrap {
@@ -1298,14 +1320,16 @@ a:hover {
     justify-content: center;
   }
 
+  /* Di tablet/mobile avatar tampil di atas teks dengan jarak proporsional */
   .hero-visual-card {
-    margin: 40px auto 0;
-    max-width: 330px;
+    margin: 0 auto 1.75rem;
+    max-width: 280px;
   }
 
   .floating-badge {
     padding: 8px 12px;
     font-size: 0.78rem;
+    gap: 8px;
   }
 
   .floating-badge-top-left {
@@ -1319,8 +1343,7 @@ a:hover {
   }
 
   .floating-badge-center-left {
-    bottom: 22%;
-    left: -15px;
+    display: none;
   }
 }
 
@@ -1334,14 +1357,47 @@ a:hover {
   }
 
   .hero-title {
-    font-size: clamp(2rem, 6.5vw, 2.5rem);
+    font-size: clamp(1.85rem, 6.5vw, 2.35rem);
+    line-height: 1.2;
   }
 
   .about-section,
   .skills-section,
   .projects-section,
   .contact-section {
-    padding: 70px 0;
+    padding: 85px 0 60px;
+  }
+
+  .ambient-glow-1 {
+    width: 260px;
+    height: 260px;
+    top: -30px;
+    left: -30px;
+  }
+
+  .ambient-glow-2 {
+    width: 280px;
+    height: 280px;
+    top: 35%;
+    right: -30px;
+  }
+
+  .ambient-glow-3 {
+    display: none;
+  }
+
+  .hero-visual-card {
+    max-width: 240px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .hero-avatar-frame {
+    padding: 5px;
+    border-radius: 20px;
+  }
+
+  .hero-avatar-inner {
+    border-radius: 16px;
   }
 
   .footer-cyber {
@@ -1355,14 +1411,26 @@ a:hover {
 }
 
 @media (max-width: 575.98px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
   .navbar-cyber {
-    top: 6px;
-    padding: 0 8px;
+    top: 10px;
+    top: max(10px, env(safe-area-inset-top, 10px));
+    padding: 0 16px;
   }
 
   .navbar-cyber-container {
     padding: 8px 14px;
-    border-radius: 12px;
+    border-radius: 14px;
+  }
+
+  .navbar-toggler {
+    border-radius: 10px;
+    padding: 6px 9px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
   .brand-text {
@@ -1376,36 +1444,79 @@ a:hover {
   }
 
   .hero-section {
-    padding: 100px 0 40px;
+    padding: 95px 0 35px;
   }
 
   .hero-visual-card {
-    max-width: 260px;
-    margin: 30px auto 0;
+    max-width: 215px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .hero-avatar-frame {
+    padding: 4px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 210, 255, 0.25);
+  }
+
+  .hero-avatar-inner {
+    border-radius: 14px;
+  }
+
+  .floating-badge {
+    padding: 5px 9px;
+    font-size: 0.72rem;
+    gap: 6px;
+  }
+
+  .floating-badge i {
+    font-size: 0.95rem;
   }
 
   .floating-badge-top-left {
-    top: -10px;
-    left: -6px;
+    top: -8px;
+    left: -8px;
   }
 
   .floating-badge-bottom-right {
-    bottom: -10px;
-    right: -6px;
+    bottom: -8px;
+    right: -8px;
   }
 
   .floating-badge-center-left {
     display: none;
   }
 
-  .floating-badge {
-    padding: 6px 10px;
-    font-size: 0.74rem;
-    gap: 6px;
+  .hero-type-wrap {
+    font-size: clamp(0.85rem, 3.8vw, 1.15rem);
+    min-height: 2.1rem;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .floating-badge i {
-    font-size: 1rem;
+  .typed-text-target {
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  .hero-cta-buttons {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .hero-cta-buttons .btn-cyber-primary {
+    width: 100%;
+    padding: 11px 18px;
+    font-size: 0.92rem;
+  }
+
+  .hero-cta-buttons .btn-cyber-outline {
+    flex: 1 1 calc(50% - 6px);
+    padding: 9px 8px;
+    font-size: 0.82rem;
+    min-width: 0;
+    text-align: center;
   }
 
   .bento-card {
@@ -1413,11 +1524,12 @@ a:hover {
   }
 
   .stat-counter-number {
-    font-size: 1.85rem;
+    font-size: 1.75rem;
   }
 
   .stat-label {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
   }
 
   .skill-card-item {
@@ -1468,21 +1580,42 @@ a:hover {
     padding: 1.25rem !important;
   }
 
-  .btn-cyber-primary,
-  .btn-cyber-outline {
-    padding: 10px 20px;
+  .back-to-top {
+    bottom: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 379.98px) {
+  .navbar-cyber {
+    padding: 0 10px;
+  }
+
+  .navbar-cyber-container {
+    padding: 6px 10px;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
+  }
+
+  .brand-badge {
+    width: 28px;
+    height: 28px;
     font-size: 0.88rem;
-    width: 100%;
-    justify-content: center;
   }
 
-  .hero-cta-buttons {
-    flex-direction: column;
-    width: 100%;
+  .navbar-toggler {
+    padding: 4px 7px;
+    min-width: 34px;
+    min-height: 34px;
   }
 
-  .hero-cta-buttons a {
-    width: 100%;
+  .hero-cta-buttons .btn-cyber-outline {
+    flex: 1 1 100%;
   }
 }
 

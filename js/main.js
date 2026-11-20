@@ -1,17 +1,24 @@
-// Inisialisasi komponen setelah DOM siap
+// Inisialisasi komponen utama setelah DOM siap
 document.addEventListener('DOMContentLoaded', () => {
+  initCurrentYear();
   initParticles();
   initTypedText();
   initAOS();
-  initNavbarScroll();
-  initVanillaTilt();
-  initProjectFilters();
+  initScrollManagement();
+  initProjectCatalog();
   initProjectModal();
   initContactForm();
-  initBackToTop();
 });
 
-// Partikel background canvas
+// Penentuan tahun copyright pada footer
+function initCurrentYear() {
+  const yearElem = document.getElementById('currentYear');
+  if (yearElem) {
+    yearElem.textContent = new Date().getFullYear();
+  }
+}
+
+// Partikel background canvas interaktif & hemat performa
 function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
@@ -24,24 +31,32 @@ function initParticles() {
   let particles = [];
   const maxParticles = window.innerWidth < 768 ? 35 : 75;
   const connectionDistance = 120;
-  let mouse = { x: null, y: null, radius: 150 };
+  const connectionDistanceSq = connectionDistance * connectionDistance; // Menghindari Math.sqrt berulang
+  const mouse = { x: null, y: null, radius: 150 };
+  let animationFrameId = null;
 
   function resizeCanvas() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
   }
   resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+
+  // Debounce pada event resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(resizeCanvas, 150);
+  }, { passive: true });
 
   window.addEventListener('mousemove', (e) => {
-    mouse.x = e.x;
-    mouse.y = e.y;
-  });
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, { passive: true });
 
   window.addEventListener('mouseout', () => {
     mouse.x = null;
     mouse.y = null;
-  });
+  }, { passive: true });
 
   class Particle {
     constructor() {
@@ -66,8 +81,9 @@ function initParticles() {
       if (mouse.x !== null && mouse.y !== null) {
         const dx = mouse.x - this.x;
         const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < mouse.radius) {
+        const distSq = dx * dx + dy * dy;
+        if (distSq < mouse.radius * mouse.radius) {
+          const dist = Math.sqrt(distSq);
           const force = (mouse.radius - dist) / mouse.radius;
           this.x -= (dx / dist) * force * 1.5;
           this.y -= (dy / dist) * force * 1.5;
@@ -93,13 +109,16 @@ function initParticles() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
 
+    // Kalkulasi koneksi partikel efisien
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const dx = particles[i].x - particles[j].x;
         const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy;
 
-        if (dist < connectionDistance) {
+        // Filter kuadratik terlebih dahulu sebelum menghitung akar kuadrat
+        if (distSq < connectionDistanceSq) {
+          const dist = Math.sqrt(distSq);
           const alpha = (1 - dist / connectionDistance) * 0.22;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -116,10 +135,19 @@ function initParticles() {
       p.draw();
     });
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
   }
 
   animate();
+
+  // Pause render loop saat tab tidak aktif (menghemat baterai & CPU)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    } else {
+      animationFrameId = requestAnimationFrame(animate);
+    }
+  });
 }
 
 // Efek teks mengetik (Typed.js)
@@ -158,56 +186,166 @@ function initAOS() {
   }
 }
 
-// Navbar scroll & scrollspy
-function initNavbarScroll() {
+// Manajemen scroll terpusat (Navbar, Scrollspy & Back to Top)
+function initScrollManagement() {
   const navbar = document.querySelector('.navbar-cyber');
   const navLinks = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
   const navbarCollapse = document.querySelector('.navbar-collapse');
+  const backToTopBtn = document.getElementById('backToTopBtn');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
+  // Cache posisi section untuk mencegah layout thrashing saat scroll
+  let cachedSections = [];
+  function cacheSectionPositions() {
+    cachedSections = Array.from(sections).map(s => ({
+      id: s.getAttribute('id'),
+      top: s.offsetTop,
+      bottom: s.offsetTop + s.offsetHeight
+    }));
+  }
+  cacheSectionPositions();
+
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(cacheSectionPositions, 200);
+  }, { passive: true });
+
+  // Menutup menu mobile
+  function closeMobileNav() {
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      const bsCollapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse, { toggle: false });
+      bsCollapse.hide();
+    }
+  }
+
+  // Posisi absolut elemen dari atas dokumen
+  function getAbsoluteOffsetTop(el) {
+    let top = 0;
+    while (el) {
+      top += el.offsetTop || 0;
+      el = el.offsetParent;
+    }
+    return top;
+  }
+
+  // Smooth scroll presisi untuk link navigasi
+  function handleNavClick(e) {
+    const href = this.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+
+    const targetElement = href === '#home' ? document.body : document.querySelector(href);
+    if (!targetElement) return;
+
+    e.preventDefault();
+
+    const isMobile = window.innerWidth < 768;
+    const navOffset = isMobile ? 68 : 85;
+
+    let targetTop = 0;
+    if (href !== '#home') {
+      targetTop = getAbsoluteOffsetTop(targetElement) - navOffset;
+    }
+
+    closeMobileNav();
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: 'smooth'
+    });
+
+    if (history.pushState) {
+      history.pushState(null, null, href);
+    }
+  }
+
+  // Terapkan handler ke semua link navigasi & CTA
+  if (navbar) {
+    navbar.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', handleNavClick);
+    });
+  }
+
+  document.querySelectorAll('.hero-cta-buttons a[href^="#"]').forEach(link => {
+    link.addEventListener('click', handleNavClick);
+  });
+
+  // Menutup menu mobile jika pengguna mengetuk area di luar navbar
+  document.addEventListener('click', (e) => {
+    if (navbar && navbarCollapse && navbarCollapse.classList.contains('show')) {
+      if (!navbar.contains(e.target)) {
+        closeMobileNav();
+      }
+    }
+  });
+
+  // Handler scroll terpadu dengan requestAnimationFrame (60 FPS smooth)
+  let isScrolling = false;
+  function onScroll() {
+    const scrollY = window.scrollY;
+
+    // Toggle styling navbar
+    if (scrollY > 40) {
       navbar?.classList.add('scrolled');
     } else {
       navbar?.classList.remove('scrolled');
     }
 
-    let currentSectionId = '';
-    const scrollPosition = window.scrollY + 140;
-
-    sections.forEach(section => {
-      const top = section.offsetTop;
-      const height = section.offsetHeight;
-      if (scrollPosition >= top && scrollPosition < top + height) {
-        currentSectionId = section.getAttribute('id');
+    // Toggle tombol Back to Top
+    if (backToTopBtn) {
+      if (scrollY > 400) {
+        backToTopBtn.classList.add('active');
+      } else {
+        backToTopBtn.classList.remove('active');
       }
-    });
+    }
+
+    // Scrollspy aktif
+    const scrollPosition = scrollY + 130;
+    let currentSectionId = '';
+
+    for (let i = 0; i < cachedSections.length; i++) {
+      const sec = cachedSections[i];
+      if (scrollPosition >= sec.top && scrollPosition < sec.bottom) {
+        currentSectionId = sec.id;
+        break;
+      }
+    }
 
     navLinks.forEach(link => {
-      link.classList.remove('active');
       if (link.getAttribute('href') === `#${currentSectionId}`) {
         link.classList.add('active');
+      } else {
+        link.classList.remove('active');
       }
     });
-  });
 
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-        const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
-        if (bsCollapse) {
-          bsCollapse.hide();
-        }
-      }
+    isScrolling = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!isScrolling) {
+      window.requestAnimationFrame(onScroll);
+      isScrolling = true;
+    }
+  }, { passive: true });
+
+  // Aksi tombol Back to Top
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  });
+  }
 }
 
-// Efek kemiringan 3D kartu (VanillaTilt)
-function initVanillaTilt() {
+// Inisialisasi VanillaTilt pada elemen kartu
+function initVanillaTilt(targetElements) {
   if (typeof VanillaTilt === 'undefined') return;
 
-  const tiltCards = document.querySelectorAll('.tilt-card');
+  const tiltCards = targetElements || document.querySelectorAll('.tilt-card');
   if (tiltCards.length > 0) {
     VanillaTilt.init(tiltCards, {
       max: 10,
@@ -221,80 +359,81 @@ function initVanillaTilt() {
 }
 
 // Render kartu proyek & filter kategori
-function renderProjects(filterValue = 'all') {
+function initProjectCatalog() {
   const container = document.getElementById('projectsContainer');
   if (!container || typeof projectsData === 'undefined') return;
 
-  const filteredProjects = projectsData.filter(project => {
-    if (filterValue === 'all') return true;
-    return project.category === filterValue;
-  });
+  function updateFilterCounts() {
+    const allCount = projectsData.length;
+    const completedCount = projectsData.filter(p => p.category === 'completed').length;
+    const inProgressCount = projectsData.filter(p => p.category === 'in-progress').length;
 
-  container.innerHTML = filteredProjects.map(p => `
-    <div class="col-12 col-md-6 col-lg-4 project-grid-item" data-category="${p.category}" data-aos="fade-up">
-      <article class="project-card tilt-card">
-        <div class="project-img-wrapper" data-project-id="${p.id}">
-          <img src="${p.image}" alt="${p.title}" loading="lazy">
-          <div class="project-overlay">
-            <button class="btn-cyber-primary btn-sm btn-view-project-detail" data-project-id="${p.id}">
-              <i class="bi bi-info-circle"></i> Detail Proyek
-            </button>
-          </div>
-        </div>
-        <div class="project-content">
-          <div>
-            <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="project-category">${p.categoryLabel}</span>
-              <span class="badge ${p.category === 'completed' ? 'bg-success bg-opacity-25 text-success border border-success border-opacity-50' : 'bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50'} small" style="font-size: 0.7rem;">${p.statusBadge}</span>
-            </div>
-            <h3 class="project-title">${p.title}</h3>
-            <p class="project-desc">${p.shortDesc}</p>
-            <div class="tech-tag-list">
-              ${p.tags.map(t => `<span class="tech-tag">${t}</span>`).join('')}
-            </div>
-          </div>
-          <div class="project-links">
-            ${p.liveUrl && p.liveUrl !== '#' ? `
-              <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="project-link-btn text-cyan">
-                <i class="bi bi-box-arrow-up-right"></i> Live Demo
-              </a>
-            ` : `
-              <button type="button" class="project-link-btn text-warning btn-view-project-detail border-0 bg-transparent p-0" data-project-id="${p.id}">
-                <i class="bi bi-hourglass-split"></i> Detail &amp; Rencana
+    const btnAll = document.querySelector('.filter-btn[data-filter="all"]');
+    const btnCompleted = document.querySelector('.filter-btn[data-filter="completed"]');
+    const btnInProgress = document.querySelector('.filter-btn[data-filter="in-progress"]');
+
+    if (btnAll) btnAll.textContent = `Semua Proyek (${allCount})`;
+    if (btnCompleted) btnCompleted.textContent = `Selesai (${completedCount})`;
+    if (btnInProgress) btnInProgress.textContent = `Dalam Pengembangan (${inProgressCount})`;
+  }
+
+  function renderProjects(filterValue = 'all') {
+    const filteredProjects = projectsData.filter(project => {
+      if (filterValue === 'all') return true;
+      return project.category === filterValue;
+    });
+
+    container.innerHTML = filteredProjects.map(p => `
+      <div class="col-12 col-md-6 col-lg-4 project-grid-item" data-category="${p.category}" data-aos="fade-up">
+        <article class="project-card tilt-card">
+          <div class="project-img-wrapper" data-project-id="${p.id}" style="cursor: pointer;">
+            <img src="${p.image}" alt="${p.title}" loading="lazy">
+            <div class="project-overlay">
+              <button class="btn-cyber-primary btn-sm btn-view-project-detail" data-project-id="${p.id}">
+                <i class="bi bi-info-circle"></i> Detail Proyek
               </button>
-            `}
-            <a href="${p.githubUrl || '#'}" target="_blank" rel="noopener noreferrer" class="project-link-btn">
-              <i class="bi bi-github"></i> Repository
-            </a>
+            </div>
           </div>
-        </div>
-      </article>
-    </div>
-  `).join('');
+          <div class="project-content">
+            <div>
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="project-category">${p.categoryLabel}</span>
+                <span class="badge ${p.category === 'completed' ? 'bg-success bg-opacity-25 text-success border border-success border-opacity-50' : 'bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50'} small" style="font-size: 0.7rem;">${p.statusBadge}</span>
+              </div>
+              <h3 class="project-title">${p.title}</h3>
+              <p class="project-desc">${p.shortDesc}</p>
+              <div class="tech-tag-list">
+                ${p.tags.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+            <div class="project-links">
+              ${p.liveUrl && p.liveUrl !== '#' ? `
+                <a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer" class="project-link-btn text-cyan">
+                  <i class="bi bi-box-arrow-up-right"></i> Live Demo
+                </a>
+              ` : `
+                <button type="button" class="project-link-btn text-warning btn-view-project-detail border-0 bg-transparent p-0" data-project-id="${p.id}">
+                  <i class="bi bi-hourglass-split"></i> Detail &amp; Rencana
+                </button>
+              `}
+              <a href="${p.githubUrl || '#'}" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                <i class="bi bi-github"></i> Repository
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    `).join('');
 
-  initVanillaTilt();
-  bindModalTriggers();
-}
+    // Inisialisasi tilt hanya pada kartu yang baru di-render
+    const newCards = container.querySelectorAll('.tilt-card');
+    initVanillaTilt(newCards);
+  }
 
-function updateFilterCounts() {
-  if (typeof projectsData === 'undefined') return;
-  const allCount = projectsData.length;
-  const completedCount = projectsData.filter(p => p.category === 'completed').length;
-  const inProgressCount = projectsData.filter(p => p.category === 'in-progress').length;
-
-  const btnAll = document.querySelector('.filter-btn[data-filter="all"]');
-  const btnCompleted = document.querySelector('.filter-btn[data-filter="completed"]');
-  const btnInProgress = document.querySelector('.filter-btn[data-filter="in-progress"]');
-
-  if (btnAll) btnAll.textContent = `Semua Proyek (${allCount})`;
-  if (btnCompleted) btnCompleted.textContent = `Selesai (${completedCount})`;
-  if (btnInProgress) btnInProgress.textContent = `Dalam Pengembangan (${inProgressCount})`;
-}
-
-function initProjectFilters() {
   updateFilterCounts();
   renderProjects('all');
 
+  // Filter tombol kategori
   const filterBtns = document.querySelectorAll('.filter-btn');
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -304,77 +443,91 @@ function initProjectFilters() {
       renderProjects(filterValue);
     });
   });
-}
 
-// Modal detail proyek
-function bindModalTriggers() {
-  const modalElement = document.getElementById('projectDetailModal');
-  if (!modalElement || typeof projectsData === 'undefined') return;
+  // Event delegation untuk pemicu modal proyek (efisien & bebas kebocoran memori)
+  container.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.btn-view-project-detail, .project-img-wrapper');
+    if (!trigger) return;
 
-  const detailTriggers = document.querySelectorAll('.btn-view-project-detail, .project-img-wrapper');
-
-  detailTriggers.forEach(trigger => {
-    trigger.style.cursor = 'pointer';
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      const projectId = trigger.getAttribute('data-project-id') || trigger.querySelector('.btn-view-project-detail')?.getAttribute('data-project-id');
-      const project = projectsData.find(p => p.id === projectId);
-      if (!project) return;
-
-      document.getElementById('modalProjectTitle').textContent = project.title;
-      document.getElementById('modalProjectCategory').textContent = project.categoryLabel;
-      document.getElementById('modalProjectDesc').textContent = project.fullDesc;
-      document.getElementById('modalProjectArchitecture').textContent = project.architecture;
-
-      const imgElem = document.getElementById('modalProjectImg');
-      imgElem.src = project.image;
-      imgElem.alt = project.title;
-
-      const metricsContainer = document.getElementById('modalProjectMetrics');
-      if (metricsContainer && project.metrics) {
-        metricsContainer.innerHTML = `
-          <div class="col-4 text-center p-2 rounded" style="background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.15)">
-            <small class="text-secondary d-block" style="font-size: 0.72rem;">PERAN</small>
-            <span class="text-cyan fw-bold" style="font-size: 0.82rem;">${project.metrics.role}</span>
-          </div>
-          <div class="col-4 text-center p-2 rounded" style="background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.15)">
-            <small class="text-secondary d-block" style="font-size: 0.72rem;">STACK</small>
-            <span class="text-violet fw-bold" style="font-size: 0.82rem;">${project.metrics.tech}</span>
-          </div>
-          <div class="col-4 text-center p-2 rounded" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15)">
-            <small class="text-secondary d-block" style="font-size: 0.72rem;">STATUS</small>
-            <span class="text-success fw-bold" style="font-size: 0.82rem;">${project.metrics.status}</span>
-          </div>
-        `;
-      }
-
-      const featureListElem = document.getElementById('modalProjectFeatures');
-      if (featureListElem && project.features) {
-        featureListElem.innerHTML = project.features
-          .map(f => `<li class="mb-2 d-flex align-items-center gap-2"><i class="bi bi-check2-circle text-cyan"></i> <span>${f}</span></li>`)
-          .join('');
-      }
-
-      const techTagsElem = document.getElementById('modalProjectTags');
-      if (techTagsElem && project.tags) {
-        techTagsElem.innerHTML = project.tags
-          .map(t => `<span class="tech-tag">${t}</span>`)
-          .join('');
-      }
-
-      const liveDemoBtn = document.getElementById('modalLiveDemoBtn');
-      const githubBtn = document.getElementById('modalGithubBtn');
-      if (liveDemoBtn) liveDemoBtn.href = project.liveUrl;
-      if (githubBtn) githubBtn.href = project.githubUrl;
-
-      const bsModal = bootstrap.Modal.getOrCreateInstance(modalElement);
-      bsModal.show();
-    });
+    e.preventDefault();
+    const projectId = trigger.getAttribute('data-project-id') || trigger.querySelector('.btn-view-project-detail')?.getAttribute('data-project-id');
+    if (projectId) {
+      openProjectModal(projectId);
+    }
   });
 }
 
+// Modal detail proyek dengan DOM caching
+let openProjectModal = () => {};
+
 function initProjectModal() {
-  bindModalTriggers();
+  const modalElement = document.getElementById('projectDetailModal');
+  if (!modalElement || typeof projectsData === 'undefined') return;
+
+  // Cache referensi DOM modal sekali saja
+  const modalDom = {
+    title: document.getElementById('modalProjectTitle'),
+    category: document.getElementById('modalProjectCategory'),
+    desc: document.getElementById('modalProjectDesc'),
+    architecture: document.getElementById('modalProjectArchitecture'),
+    img: document.getElementById('modalProjectImg'),
+    metrics: document.getElementById('modalProjectMetrics'),
+    features: document.getElementById('modalProjectFeatures'),
+    tags: document.getElementById('modalProjectTags'),
+    liveDemoBtn: document.getElementById('modalLiveDemoBtn'),
+    githubBtn: document.getElementById('modalGithubBtn')
+  };
+
+  const bsModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+  openProjectModal = function(projectId) {
+    const project = projectsData.find(p => p.id === projectId);
+    if (!project) return;
+
+    if (modalDom.title) modalDom.title.textContent = project.title;
+    if (modalDom.category) modalDom.category.textContent = project.categoryLabel;
+    if (modalDom.desc) modalDom.desc.textContent = project.fullDesc;
+    if (modalDom.architecture) modalDom.architecture.textContent = project.architecture;
+
+    if (modalDom.img) {
+      modalDom.img.src = project.image;
+      modalDom.img.alt = project.title;
+    }
+
+    if (modalDom.metrics && project.metrics) {
+      modalDom.metrics.innerHTML = `
+        <div class="col-4 text-center p-2 rounded" style="background: rgba(0,210,255,0.06); border: 1px solid rgba(0,210,255,0.15)">
+          <small class="text-secondary d-block" style="font-size: 0.72rem;">PERAN</small>
+          <span class="text-cyan fw-bold" style="font-size: 0.82rem;">${project.metrics.role}</span>
+        </div>
+        <div class="col-4 text-center p-2 rounded" style="background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.15)">
+          <small class="text-secondary d-block" style="font-size: 0.72rem;">STACK</small>
+          <span class="text-violet fw-bold" style="font-size: 0.82rem;">${project.metrics.tech}</span>
+        </div>
+        <div class="col-4 text-center p-2 rounded" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.15)">
+          <small class="text-secondary d-block" style="font-size: 0.72rem;">STATUS</small>
+          <span class="text-success fw-bold" style="font-size: 0.82rem;">${project.metrics.status}</span>
+        </div>
+      `;
+    }
+
+    if (modalDom.features && project.features) {
+      modalDom.features.innerHTML = project.features
+        .map(f => `<li class="mb-2 d-flex align-items-center gap-2"><i class="bi bi-check2-circle text-cyan"></i> <span>${f}</span></li>`)
+        .join('');
+    }
+
+    if (modalDom.tags && project.tags) {
+      modalDom.tags.innerHTML = project.tags
+        .map(t => `<span class="tech-tag">${t}</span>`)
+        .join('');
+    }
+
+    if (modalDom.liveDemoBtn) modalDom.liveDemoBtn.href = project.liveUrl;
+    if (modalDom.githubBtn) modalDom.githubBtn.href = project.githubUrl;
+
+    bsModal.show();
+  };
 }
 
 // Validasi formulir kontak real-time
@@ -490,26 +643,5 @@ function initContactForm() {
         if (err) err.textContent = '';
       });
     }, 1200);
-  });
-}
-
-// Tombol back to top
-function initBackToTop() {
-  const backToTopBtn = document.getElementById('backToTopBtn');
-  if (!backToTopBtn) return;
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-      backToTopBtn.classList.add('active');
-    } else {
-      backToTopBtn.classList.remove('active');
-    }
-  });
-
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
   });
 }

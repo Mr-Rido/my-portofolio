@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description"
     content="Personal Portfolio Muhammad Ridhwan Rido - Mahasiswa S1 Sistem Informasi & Junior Web Developer. Antusias dalam Web Development dan Software Engineering.">
   <meta name="keywords"
@@ -13,6 +13,10 @@
   <title>Muhammad Ridhwan Rido — Junior Web Developer & Mahasiswa Sistem Informasi</title>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/profile.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
@@ -78,8 +82,8 @@
       <!-- Hero Section -->
       <section id="home" class="hero-section" aria-label="Hero Section">
         <div class="container">
-          <div class="row align-items-center g-5">
-            <div class="col-lg-7" data-aos="fade-up" data-aos-duration="900">
+          <div class="row align-items-center g-4 g-lg-5 hero-row">
+            <div class="col-lg-7 order-2 order-lg-1" data-aos="fade-up" data-aos-duration="900">
               <div class="d-inline-flex align-items-center gap-2 glass-pill mb-3">
                 <span class="pulse-indicator" aria-hidden="true"></span>
                 <span>Terbuka untuk Belajar &amp; Kolaborasi Proyek</span>
@@ -106,16 +110,17 @@
                   <i class="bi bi-rocket-takeoff-fill"></i>
                   <span>Lihat Proyek Saya</span>
                 </a>
-              
-                <a href="assets/docs/cv.pdf" download="Muhammad_Ridhwan_Rido_CV.pdf" class="btn-cyber-outline text-decoration-none">
+
+                <a href="assets/docs/cv.pdf" download="Muhammad_Ridhwan_Rido_CV.pdf"
+                  class="btn-cyber-outline text-decoration-none">
                   <i class="bi bi-file-earmark-arrow-down-fill text-cyan"></i>
                   <span>Download CV</span>
                 </a>
 
                 <a href="assets/docs/cv.html" target="_blank" class="btn-cyber-outline text-decoration-none">
-                <i class="bi bi-eye text-cyan"></i>
-                <span>Preview CV</span>
-              </a>
+                  <i class="bi bi-eye text-cyan"></i>
+                  <span>Preview CV</span>
+                </a>
               </div>
 
               <div class="d-flex align-items-center gap-3 pt-2 hero-social-row">
@@ -138,7 +143,8 @@
               </div>
             </div>
 
-            <div class="col-lg-5 text-center" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
+            <div class="col-lg-5 order-1 order-lg-2 text-center" data-aos="zoom-in" data-aos-duration="1000"
+              data-aos-delay="150">
               <div class="hero-visual-card tilt-card">
                 <div class="floating-badge floating-badge-top-left">
                   <i class="bi bi-code-slash text-cyan"></i>
@@ -158,7 +164,7 @@
                 <div class="hero-avatar-frame">
                   <div class="hero-avatar-inner">
                     <img src="assets/images/profile.jpeg" alt="Foto Profil Futuristik Muhammad Ridhwan Rido" width="420"
-                      height="420" loading="eager">
+                      height="420" loading="eager" fetchpriority="high" decoding="async">
                   </div>
                 </div>
               </div>
@@ -200,16 +206,16 @@
                   </p>
                 </div>
 
-                <div class="row g-3 pt-3 border-top border-secondary border-opacity-25">
-                  <div class="col-sm-4 text-center text-sm-start">
+                <div class="row g-2 g-sm-3 pt-3 border-top border-secondary border-opacity-25">
+                  <div class="col-4 text-center text-sm-start">
                     <div class="stat-counter-number">S1</div>
                     <div class="stat-label">Sistem Informasi (2024)</div>
                   </div>
-                  <div class="col-sm-4 text-center text-sm-start">
+                  <div class="col-4 text-center text-sm-start">
                     <div class="stat-counter-number text-cyan">1+</div>
                     <div class="stat-label">Proyek Nyata (Next.js)</div>
                   </div>
-                  <div class="col-sm-4 text-center text-sm-start">
+                  <div class="col-4 text-center text-sm-start">
                     <div class="stat-counter-number text-violet">100%</div>
                     <div class="stat-label">Semangat Belajar &amp; Tumbuh</div>
                   </div>
@@ -255,11 +261,14 @@
                     Bidang-bidang teknologi yang aktif saya eksplorasi dan kembangkan saat ini:
                   </p>
                   <div class="d-flex flex-wrap gap-2">
-                    <span class="glass-pill"><i class="bi bi-code-square text-cyan"></i> Web Development (Next.js &amp; React)</span>
+                    <span class="glass-pill"><i class="bi bi-code-square text-cyan"></i> Web Development (Next.js &amp;
+                      React)</span>
                     <span class="glass-pill"><i class="bi bi-palette text-cyan"></i> UI/UX Design &amp; Figma</span>
                     <span class="glass-pill"><i class="bi bi-phone text-cyan"></i> Responsive Web Design</span>
-                    <span class="glass-pill"><i class="bi bi-database text-cyan"></i> Basis Data Relasional &amp; SQL</span>
-                    <span class="glass-pill"><i class="bi bi-cpu text-cyan"></i> Software Engineering Fundamentals</span>
+                    <span class="glass-pill"><i class="bi bi-database text-cyan"></i> Basis Data Relasional &amp;
+                      SQL</span>
+                    <span class="glass-pill"><i class="bi bi-cpu text-cyan"></i> Software Engineering
+                      Fundamentals</span>
                   </div>
                 </div>
               </article>
@@ -278,15 +287,18 @@
                   <ul class="list-unstyled mb-0">
                     <li class="mb-2 d-flex align-items-start gap-2">
                       <i class="bi bi-arrow-right-circle text-violet mt-1"></i>
-                      <span class="text-secondary">Menyelesaikan dan merilis <strong>2 proyek web baru</strong> untuk melengkapi portofolio nyata ini.</span>
+                      <span class="text-secondary">Menyelesaikan dan merilis <strong>2 proyek web baru</strong> untuk
+                        melengkapi portofolio nyata ini.</span>
                     </li>
                     <li class="mb-2 d-flex align-items-start gap-2">
                       <i class="bi bi-arrow-right-circle text-violet mt-1"></i>
-                      <span class="text-secondary">Memperdalam pemahaman konsep <strong>full-stack</strong> (integrasi backend API dan basis data).</span>
+                      <span class="text-secondary">Memperdalam pemahaman konsep <strong>full-stack</strong> (integrasi
+                        backend API dan basis data).</span>
                     </li>
                     <li class="d-flex align-items-start gap-2">
                       <i class="bi bi-arrow-right-circle text-violet mt-1"></i>
-                      <span class="text-secondary">Mempelajari best practice <strong>clean code</strong> dan kolaborasi tim melalui Git/GitHub.</span>
+                      <span class="text-secondary">Mempelajari best practice <strong>clean code</strong> dan kolaborasi
+                        tim melalui Git/GitHub.</span>
                     </li>
                   </ul>
                 </div>
@@ -656,7 +668,8 @@
                       data-project-id="student-academic-planner">
                       <i class="bi bi-hourglass-split"></i> Dalam Pengerjaan
                     </button>
-                    <a href="https://github.com/Mr-Rido/PLANNER-TASK" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                    <a href="https://github.com/Mr-Rido/PLANNER-TASK" target="_blank" rel="noopener noreferrer"
+                      class="project-link-btn">
                       <i class="bi bi-github"></i> Repository
                     </a>
                   </div>
@@ -703,7 +716,8 @@
                       data-project-id="umkm-pos-storefront">
                       <i class="bi bi-lightbulb"></i> Rencana Berikutnya
                     </button>
-                    <a href="https://github.com/Mr-Rido" target="_blank" rel="noopener noreferrer" class="project-link-btn">
+                    <a href="https://github.com/Mr-Rido" target="_blank" rel="noopener noreferrer"
+                      class="project-link-btn">
                       <i class="bi bi-github"></i> GitHub
                     </a>
                   </div>
@@ -845,21 +859,22 @@
               <span class="brand-text">Ridhwan<span class="text-cyan">.dev</span></span>
             </a>
             <p class="footer-brand-desc">
-              Mahasiswa S1 Sistem Informasi &amp; Junior Web Developer yang berfokus mendalami Software Engineering dan ekosistem web modern.
+              Mahasiswa S1 Sistem Informasi &amp; Junior Web Developer yang berfokus mendalami Software Engineering dan
+              ekosistem web modern.
             </p>
           </div>
 
           <div class="col-lg-5 col-md-6 text-center text-md-end">
             <div class="footer-social-title">Connect &amp; Collaborate</div>
             <div class="d-flex align-items-center justify-content-center justify-content-md-end gap-2">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn-icon-circle"
+              <a href="https://github.com/Mr-Rido" target="_blank" rel="noopener noreferrer" class="btn-icon-circle"
                 aria-label="GitHub"><i class="bi bi-github"></i></a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="btn-icon-circle"
                 aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="btn-icon-circle"
                 aria-label="X Twitter"><i class="bi bi-twitter-x"></i></a>
-              <a href="mailto:ridhwanrido794@gmail.com" class="btn-icon-circle"
-                aria-label="Email"><i class="bi bi-envelope-fill"></i></a>
+              <a href="mailto:ridhwanrido794@gmail.com" class="btn-icon-circle" aria-label="Email"><i
+                  class="bi bi-envelope-fill"></i></a>
             </div>
           </div>
         </div>
@@ -908,7 +923,8 @@
           <h5 class="fs-6 text-cyan fw-bold text-uppercase tracking-wider font-monospace mb-2">// Deskripsi Proyek</h5>
           <p id="modalProjectDesc" class="text-secondary leading-relaxed mb-4"></p>
 
-          <h5 class="fs-6 text-cyan fw-bold text-uppercase tracking-wider font-monospace mb-2">// Fitur &amp; Karakteristik</h5>
+          <h5 class="fs-6 text-cyan fw-bold text-uppercase tracking-wider font-monospace mb-2">// Fitur &amp;
+            Karakteristik</h5>
           <ul id="modalProjectFeatures" class="list-unstyled text-secondary mb-4"></ul>
 
           <h5 class="fs-6 text-cyan fw-bold text-uppercase tracking-wider font-monospace mb-2">// Arsitektur Teknis</h5>
@@ -942,9 +958,6 @@
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
   <script src="js/projects-data.js"></script>
   <script src="js/main.js"></script>
-  <script>
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-  </script>
 </body>
 
 </html>
